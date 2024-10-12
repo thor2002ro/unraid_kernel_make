@@ -22,14 +22,15 @@ unsquashfs -f -d bzmodules.install unraid_bzmodules.6.12.13
 # Update firmware
 rm -rf linux-firmware dvb-firmware
 git clone https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git --depth 1
-rm -rf linux-firmware/.git
-git clone https://github.com/LibreELEC/dvb-firmware.git --depth 1
-rm -rf dvb-firmware/.git
-rsync -a --force dvb-firmware/firmware/ linux-firmware/
-
-# Copy firmware
+#rm -rf linux-firmware/.git
 cd linux-firmware/
 ./copy-firmware.sh --xz ../bzmodules.install/firmware/
+
+cd $START
+
+git clone https://github.com/LibreELEC/dvb-firmware.git --depth 1
+rm -rf dvb-firmware/.git
+rsync -a --force dvb-firmware/firmware/ bzmodules.install/firmware/
 
 # Build kernel
 cd $KERNEL_LOCATION

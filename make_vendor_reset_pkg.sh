@@ -26,6 +26,10 @@ cd vendor-reset
 
 sed -i 's/strlcpy/strscpy/g' src/amd/amdgpu/atom.c
 
+#fix kernel 6.12
+sed -i 's|#include <asm/unaligned.h>|#include <linux/unaligned.h>|' src/amd/amdgpu/atom.c
+
+
 #CC=clang LLVM=1 LLVM_IAS=1
 CFLAGS="$SLKCFLAGS" make $FLAGS -C $KERNEL_LOCATION M=$(pwd) modules
 #CC=clang LLVM=1 LLVM_IAS=1 

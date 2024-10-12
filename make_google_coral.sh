@@ -18,6 +18,7 @@ rm -rf gasket-driver
 git clone https://github.com/google/gasket-driver.git
 cd gasket-driver/src
 
+sed -i '/\.llseek = no_llseek,/d' gasket_core.c
 
 #CC=clang LLVM=1 LLVM_IAS=1
 CFLAGS="$SLKCFLAGS" make $FLAGS -C $KERNEL_LOCATION M=$(pwd) modules

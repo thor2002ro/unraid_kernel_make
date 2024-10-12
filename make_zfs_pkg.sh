@@ -54,7 +54,8 @@ tar xvf openzfs.tar.gz
     --docdir=/usr/doc/zfs \
     --with-linux=$KERNEL_LOCATION \
     --with-linux-obj=$KERNEL_LOCATION \
-    --build=$ARCH-slackware-linux 
+    --build=$ARCH-slackware-linux \
+    --enable-linux-experimental
 
 #./configure --disable-user --enable-linux-builtin
 
