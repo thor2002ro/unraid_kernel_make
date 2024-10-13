@@ -19,6 +19,16 @@ rm -rf bz*
 # Unpack bzmodules
 unsquashfs -f -d bzmodules.install unraid_bzmodules.6.12.13
 
+cd bzmodules.install/firmware/
+mkdir -p ../keep
+mv ast_dp501_fw.bin BCM2033-FW.bin BCM2033-MD.hex ../keep/
+rm -r *
+mv ../keep/* .
+find . -type f \( -name "*.bin" -o -name "*.fw" -o -name "*.hex" -o -name "*.inp" -o -name "*.ucode" \) -exec xz -z {} \; -exec mv {}.xz {}.xz \;
+rm -r ../keep
+
+cd $START
+
 # Update firmware
 rm -rf linux-firmware dvb-firmware
 git clone https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git --depth 1
@@ -29,8 +39,15 @@ cd linux-firmware/
 cd $START
 
 git clone https://github.com/LibreELEC/dvb-firmware.git --depth 1
-rm -rf dvb-firmware/.git
+#rm -rf dvb-firmware/.git
+cd dvb-firmware/firmware/
+rm s2250_loader.fw s2250.fw
+# Find and compress all .bin and .fw files with xz
+find . -type f \( -name "*.bin" -o -name "*.fw" -o -name "*.hex" -o -name "*.inp" -o -name "*.ucode" \) -exec xz -z {} \; -exec mv {}.xz {}.xz \;
+cd $START
 rsync -a --force dvb-firmware/firmware/ bzmodules.install/firmware/
+
+cd $START
 
 # Build kernel
 cd $KERNEL_LOCATION
